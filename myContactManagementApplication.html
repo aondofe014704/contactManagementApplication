@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+        }
+        form {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"], input[type="password"], input[type="email"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        .note {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .note-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        .note-actions button {
+            background-color: #007bff;
+            color: white;
+            padding: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .note-actions button.delete {
+            background-color: #dc3545;
+        }
+        .note-actions button.update {
+            background-color: #ffc107;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <input type="text" id="regUsername" name="username" placeholder="Username" required>
+            <input type="email" id="regEmail" name="email" placeholder="Email" required>
+            <input type="password" id="regPassword" name="password" placeholder="Password" required>
+            <input type="submit" value="Register">
+        </form>
+
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input type="text" id="loginUsername" name="username" placeholder="Username" required>
+            <input type="password" id="loginPassword" name="password" placeholder="Password" required>
+            <input type="submit" value="Login">
+        </form>
+
+        <h2>Create Note</h2>
+        <form id="createNoteForm">
+            <textarea id="noteContent" name="content" placeholder="Write your note here..." required></textarea>
+            <input type="submit" value="Create Note">
+        </form>
+
+        <h2>Your Notes</h2>
+        <div id="notesContainer"></div>
+    </div>
+
+    <script>
+        
+        let notes = [];
+
+        document.getElementById('registerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            alert(`Registered with Username: ${username}, Email: ${email}`);
+            this.reset();
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            alert(`Logged in as Username: ${username}`);
+            this.reset();
+        });
+
+    
+        document.getElementById('createNoteForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const content = document.getElementById('noteContent').value;
+            const noteId = notes.length + 1;
+            notes.push({ id: noteId, content });
+            displayNotes();
+            this.reset();
+        });
+
+    
+        function displayNotes() {
+            const notesContainer = document.getElementById('notesContainer');
+            notesContainer.innerHTML = ''; 
+
+            notes.forEach(note => {
+                const noteDiv = document.createElement('div');
+                noteDiv.classList.add('note');
+                noteDiv.innerHTML = `
+                    <p>${note.content}</p>
+                    <div class="note-actions">
+                        <button class="update" onclick="updateNote(${note.id})">Update</button>
+                        <button class="delete" onclick="deleteNote(${note.id})">Delete</button>
+                    </div>
+                `;
+                notesContainer.appendChild(noteDiv);
+            });
+        }
+
+        function deleteNote(id) {
+            notes = notes.filter(note => note.id !== id);
+            displayNotes();
+        }
+
+        function updateNote(id) {
+            const newContent = prompt('Enter the new content for your note:');
+            if (newContent) {
+                notes = notes.map(note => note.id === id ? { ...note, content: newContent } : note);
+                displayNotes();
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoteTakingApp</title>
+    <link rel="stylesheet" href="/myNote.css">
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+            background-image: url(/assets/background-1.jpg);
+            background-size: cover;
+
+        }
+
+    </style>
+</head>
+<body>
+
+    <form action="/submit" method="post">
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+       
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+    
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+
+    
+</body>
+</html> -->
